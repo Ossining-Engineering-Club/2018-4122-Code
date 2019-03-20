@@ -32,10 +32,10 @@ public: // for functions
 	void GetUSSample();
 	double GetUSRange();
 private: // for variables
-//	Spark Left;	// change back fro worlds
-//	Spark Right;
-	VictorSP Left;
-	VictorSP Right;
+	Spark Left;	// change back fro worlds
+	Spark Right;
+//	VictorSP Left;
+//	VictorSP Right;
 	Encoder LWEncoder;
 	Encoder RWEncoder;
 	AnalogGyro Gyro;

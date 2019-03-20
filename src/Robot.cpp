@@ -2,6 +2,7 @@
 #include "Pneumatics.h"
 #include "Tankdrive.h"
 #include "Constants.h"
+#include <thread>
 
 class Robot : public SampleRobot {
 private:
@@ -12,7 +13,6 @@ private:
 	Joystick RightStick;
 	Joystick LiftStick;
 	Jaguar Lift;
-	Talon Winch;
 	Talon ArmL;
 	Talon ArmR;
 	Talon AngleArm;
@@ -37,7 +37,6 @@ public:
 	RightStick(1),
 	LiftStick(2),
 	Lift(2),
-	Winch(3),
 	ArmL(4),
 	ArmR(5),
 	AngleArm(6),
@@ -67,6 +66,26 @@ public:
 		TopLimit = false;
 	}
 
+	void LimitChecker()			// this is the multithreading function
+	{
+		dash->PutString("THREAD STATUS", "In the Thread");
+		while(IsEnabled() && IsOperatorControl())	// for tele-op
+		{
+			if(LiftStick.GetY() < 0.1 && LiftStick.GetY() > -0.1)
+				Lift.Set(AUTOLIFTCONST);
+			else
+			{		// check this convention!!!!
+				if(LimitLift.Get() && LiftStick.GetY() < AUTOLIFTCONST)
+					Lift.Set(AUTOLIFTCONST);
+				else
+					Lift.Set(LiftStick.GetY());
+			}
+		}
+		while(IsAutonomous() && IsEnabled() && LimitLift.Get())		// for Autonomous
+			continue;
+		Lift.Set(0.0);
+		dash->PutString("THREAD STATUS", "Leaving the Thread");
+	}
 	void Autonomous()
 	{
 		pnuematics.compstart();
@@ -419,36 +438,17 @@ public:
 
 	void OperatorControl()
 	{
-//		tankdrive.drive(0.0, 0.0);
 		pnuematics.compstart();
 		std::string PlateColor = DriverStation::GetInstance().GetGameSpecificMessage();
 		unsigned short i = 0;
 		tankdrive.ResetEncoders();
+		std::thread LimitCheck(&Robot::LimitChecker, this);		// start the thread!!
 		while (IsOperatorControl() && IsEnabled())
 		{
 			for(i = 0; i < 10; i++)
 			{
 				tankdrive.Drive(LeftStick.GetY(), RightStick.GetY());
 				tankdrive.SetThrottle((RightStick.GetZ() - 1) / 2);
-			}
-
-			if (LiftStick.GetRawButton(1))
-			{
-				Winch.Set(LiftStick.GetY());
-				Lift.Set(-0.15);
-			}																// limit is reached!!
-			else if(LiftStick.GetY() < 0.1 && LiftStick.GetY() > -0.1)
-			{
-				Lift.Set(-0.15);
-				Winch.Set(0.0);
-			}
-			else
-			{
-				if(LimitLift.Get() && LiftStick.GetY() < AUTOLIFTCONST)
-					Lift.Set(AUTOLIFTCONST);
-				else
-					Lift.Set(LiftStick.GetY());
-				Winch.Set(0.0);
 			}
 
 			if(LiftStick.GetRawButton(2))
@@ -501,10 +501,6 @@ public:
 				dash->PutBoolean("Arm Status", 1);
 			}
 			// for Displaying current vals!!!
-		//	dash->PutNumber("Drive Motor #1 Current", pdp.GetCurrent(#));
-		//	dash->PutNumber("Drive Motor #2 Current", pdp.GetCurrent(#));
-		//	dash->PutNumber("Drive Motor #3 Current", pdp.GetCurrent(#));
-		//	dash->PutNumber("Drive Motor #4 Current", pdp.GetCurrent(#));
 			dash->PutNumber("Right Encoder", tankdrive.GetREncoder());
 			dash->PutNumber("Left Encoder", tankdrive.GetLEncoder());
 			dash->PutNumber("Gyro Angle", tankdrive.GetAngle());
@@ -521,6 +517,7 @@ public:
 			dash->PutString("Message", PlateColor);
 		}
 
+		LimitCheck.join();
 	}
 
 };

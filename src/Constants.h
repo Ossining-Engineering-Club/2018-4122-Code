@@ -47,31 +47,31 @@
 
 // auto distances in inches
 // for striaght
-#define AUTOSTRIAGHT	(220.0 / 2)
+#define AUTOSTRIAGHT	220.0
 
 // for center paths
-#define CENTER1			(10.0 / 2)		// initially move 10 inches
+#define CENTER1			10.0		// initially move 10 inches
 // for center right side
 #define CRTURNANG		26.09
 #define CRTURNANGBACK	(CRTURNANG * -1)
-#define CRDIAGDIST		(83.0 / 2)
+#define CRDIAGDIST		83.0
 
 
 // for center left side
 #define CLTURNANG		-30.0
 #define CLTURNANGBACK	26.0
-#define CLDIAGDIST		(83.0 / 2)
+#define CLDIAGDIST		83.0
 #define CRTURNANGBACKWALL	25.0
 
 
-#define CENTER2R		(8.0 / 2)
+#define CENTER2R		8.0
 
-#define CENTER2L		(6.0 / 2)
+#define CENTER2L		6.0
 
 // for multicube center
 #define CLTURNANG2		-32.0
 #define AUTOCUBEDROPWAIT	1.0
-#define AUTOWALLTOCUBE		(61.0 / 2)
+#define AUTOWALLTOCUBE		61.0
 #define CRTURNBACKMULTI		-30.0
 
 #define AUTOCUBEGRABWAIT	0.5
@@ -83,13 +83,13 @@
 #define AUTOWIDEDRIVEMORE	60.0
 #define AUTOINDIRECTSWITCH  152.0
 #define AUTOSWITCHLEG		25.0
-#define AUTOINMID	(164.0 / 2)	// was 316.0
+#define AUTOINMID	164.0	// was 316.0
 #define AUTOTIMESCALE	3.0
 #define AUTOTURNSCALEL	-14.0
 #define AUTOTURNSCALER (-1.0 * AUTOTURNSCALEL)
-#define AUTODIAGTOSCALE		(89.0 / 2)
+#define AUTODIAGTOSCALE		89.0
 
-#define AUTOSCALELEG		(22.0 / 2)
+#define AUTOSCALELEG		22.0
 #define AUTOLEGSPEED		0.25
 
 // for direct right
@@ -112,17 +112,17 @@
 #define AUTODTURNLEFT		(AUTODTURNRIGHT * -1.0)
 
 // FOR AUTO SPECIAL CASE!!!
-#define AUTOTOMIDFIELD		(200.0 / 2)
-#define AUTOCROSSFIELDL		(158.0 / 2)	// was 186.0
-#define AUTOCROSSFIELDR		(164.0 / 2)	// was 186.0
-#define AUTOMIDTOSCALER		(18.0 / 2)
-#define AUTOMIDTOSCALEL		(29.0 / 2)
+#define AUTOTOMIDFIELD		200.0
+#define AUTOCROSSFIELDL		158.0	// was 186.0
+#define AUTOCROSSFIELDR		164.0	// was 186.0
+#define AUTOMIDTOSCALER		18.0
+#define AUTOMIDTOSCALEL		29.0
 #define AUTOAPPROACHSCALE	17.0
 
 // FOR MULTI-CUBE!!! --> double check these values again!!!
 // Multi cube scale!!
 #define AUTOUSCUBEDISTANCE	18.0		// stop when 18 inches from the wall
-#define AUTOTOCUBE			(38.0 / 2)		// was 78.2
+#define AUTOTOCUBE			38.0		// was 78.2
 
 // Multi cube switch
 #define AUTODIAGSWITCH		30.0
